@@ -1,3 +1,8 @@
+
+window.globalLog = ["Log 0 "+Date()]
+
+ 
+
 // Helper function which returns a promise which resolves once the service worker registration
 // is past the "installing" state.
 function waitUntilInstalled(registration) {
@@ -19,6 +24,14 @@ function waitUntilInstalled(registration) {
       // So we can show the list of files right away.
       resolve();
     }
+  });
+}
+
+if('serviceWorker' in navigator){
+  // Handler for messages coming from the service worker
+  navigator.serviceWorker.addEventListener('message', function(event){
+    window.globalLog.push(new Date().toISOString()+":" + event.data);
+    document.querySelector('#swlog').textContent = window.globalLog.join("\r\n");
   });
 }
 
